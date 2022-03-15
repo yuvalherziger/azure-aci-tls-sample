@@ -1,0 +1,28 @@
+name: Build and Publish
+on:
+  push:
+    branches: [ main ]
+env:
+  REGISTRY: yherzigeracr.azurecr.io
+  IMAGE_TAG: latest
+  FOO: BAR
+  IMAGE_NAME: aci-demo
+  PSEUDO_USERNAME: 00000000-0000-0000-0000-000000000000
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Build
+        run: docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} .
+      - name: ACR Authentication
+        run: |
+          set -euo pipefail
+          access_token=$(az account get-access-token --query accessToken -o tsv)
+          refresh_token=$(curl https://$REGISTRY/oauth2/exchange -v -d "grant_type=access_token&service=$REGISTRY&access_token=$access_token" | jq -r .refresh_token)
+          docker login -u $PSEUDO_USERNAME --password-stdin $REGISTRY <<< "$refresh_token"
+      - name: ACR Push
+        run: docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
