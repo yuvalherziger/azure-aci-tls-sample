@@ -1,0 +1,20 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ main ]
+env:
+  ACR_NAME: yherzigeracr
+  IMAGE_NAME: aci-demo
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${ACR_NAME}.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - run: |
+          docker build -t ${ACR_NAME}.azurecr.io/${IMAGE_NAME}:${{ github.sha }} .
+          docker push ${ACR_NAME}.azurecr.io/{IMAGE_NAME}:${{ github.sha }}
