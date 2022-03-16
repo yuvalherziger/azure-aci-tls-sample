@@ -2,10 +2,7 @@ name: Build and Publish
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 env:
-  ACR_NAME: yherzigeracr
   REGISTRY: yherzigeracr.azurecr.io
   IMAGE_TAG: latest
   FOO: BAR
