@@ -20,7 +20,6 @@ ENV PK_PATH ${PK_PATH}
 
 WORKDIR /app
 COPY --from=build /app/dist /app
-COPY entrypoint.sh .
 
 # If you don't intend to mount an Azure file share for
 # the TLS data, it's highly advised that you uncomment
