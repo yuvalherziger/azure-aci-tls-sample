@@ -2,8 +2,8 @@ ARG CONTAINER_REG=mcr.microsoft.com
 
 # Override docker args to modify:
 ARG PORT=443
-ARG CERT_PATH=/app/api/tls/aci_tls_cert.crt
-ARG PK_PATH=/app/api/tls/aci_tls_pk.key
+ARG CERT_PATH=/tls-cert/aci_tls_cert.crt
+ARG PK_PATH=/tls-cert/aci_tls_pk.key
 
 FROM ${CONTAINER_REG}/dotnet/sdk:6.0-alpine as build
 WORKDIR /app
