@@ -10,8 +10,9 @@ with TLS support, with the TLS certificates hosted in an
 ## 1. (Optional) Generate a Self-Signed TLS Certificate
 
 If you don't yet have a TLS certificate and a private key, use the following steps to generate them.
+You can do that easily with `openssl`, as demostrated below.
 
-Generate a new private key:
+First, generate a new private key:
 
 ```bash
 openssl req -new -newkey \
@@ -20,7 +21,8 @@ openssl req -new -newkey \
     -out aci_tls_cr.csr
 ```
 
-Then generate a certificate signed by the key you generated about:
+Then generate a certificate signed by the key you generated above.  Note
+that you'll be prompted to enter the certificate's data:
 
 ```bash
 openssl x509 -req -days 365 \
@@ -32,15 +34,20 @@ openssl x509 -req -days 365 \
 You should now have three new files in your current directory:
 
 1. `aci_tls_cr.csr`: Certificate request file
-1. ``
+1. `aci_tls_pk.key`: The RSA private key that signs your TLS certificate
+1. `aci_tls_cert.crt`: The TLS certificate
 
-In order to deploy
+## 2. Build the Image and Publish to ACR
+
+## TBA:
 
 ```bash
 az container create \
     --resource-group yherziger-vms \
     --name aci-tls-demo-01 \
     --image yherzigeracr.azurecr.io/aci-demo:latest \
+    --registry-username <service-principal-ID> \
+    --registry-password <service-principal-password> \
     --dns-name-label aci-tls-demo-01 \
     --ports 443 \
     --azure-file-volume-account-name acitlsdemo01 \
