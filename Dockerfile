@@ -21,5 +21,5 @@ RUN addgroup -S appgroup && \
 
 USER appuser
 
-EXPOSE 443
+EXPOSE ${PORT}
 ENTRYPOINT ["dotnet", "/app/api.dll", "-p", ${PORT}, "-c", ${CERT_PATH}, "-k", ${PK_PATH}]
