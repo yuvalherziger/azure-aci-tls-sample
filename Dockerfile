@@ -16,10 +16,17 @@ FROM ${CONTAINER_REG}/dotnet/aspnet:6.0-alpine as runtime
 WORKDIR /app
 COPY --from=build /app/dist /app
 
-RUN addgroup -S appgroup && \
-    adduser -S appuser -G appgroup
+# If you don't intend to mount an Azure file share for
+# the TLS data, it's highly advised that you uncomment
+# the following block to avoid running the container as
+# root:
 
-USER appuser
+# ----------
+# RUN addgroup -S appgroup && \
+#     adduser -S appuser -G appgroup
+
+# USER appuser
+# ----------
 
 EXPOSE ${PORT}
 ENTRYPOINT ["dotnet", "/app/api.dll", "-p", ${PORT}, "-c", ${CERT_PATH}, "-k", ${PK_PATH}]
