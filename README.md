@@ -5,9 +5,21 @@ deployed as an [Azure Container Instance (ACI)](https://docs.microsoft.com/en-us
 with TLS support, with the TLS certificates hosted in an
 [Azure File Share](https://docs.microsoft.com/en-us/azure/storage/files/storage-how-to-create-file-share?tabs=azure-portal).
 
+**Table of Contents:**
+
+- [Instructions](#instructions)
+  - [1. Generate a Self-Signed TLS Certificate](#1-generate-a-self-signed-tls-certificate)
+  - [2. Create a Blob File Share and Upload Certificate Data](#2-create-a-blob-file-share-and-upload-certificate-data)
+  - [3. Build the Image and Publish to ACR](#3-build-the-image-and-publish-to-acr)
+    - [3.1 Build the Image](#31-build-the-image)
+    - [3.2 Push Image to ACR](#32-push-image-to-acr)
+  - [4. Create an ACR Service Principal](#4-create-an-acr-service-principal)
+  - [5. Deploy the Container](#5-deploy-the-container)
+  - [6. Verify the Deployment](#6-verify-the-deployment)
+
 ## Instructions
 
-### 1. (Optional) Generate a Self-Signed TLS Certificate
+### 1. Generate a Self-Signed TLS Certificate
 
 If you don't yet have a TLS certificate and a private key, use the following steps to generate them.
 You can do that easily with `openssl`, as demostrated below.
@@ -147,3 +159,54 @@ Let's unpack the command above:
    parameters.
 1. Provide the Azure File Share credentials and the path on the container where
    the file share will be mounted.
+
+### 6. Verify the Deployment
+
+Should everything work as expected, you should be able to submit a `cURL` request
+to the API. For instance, if the FQDN for your container instance is
+`aci-tls-example.eastus.azurecontainer.io`, you can run the following command
+to test the API:
+
+```bash
+curl -X GET \
+    -s \        # Silent output 
+    -k \        # Ignore TLS verification, since our certificate is self-signed
+   https://msdn-aci-tls-01.eastus.azurecontainer.io/weatherForecast
+```
+
+The result can look like the following JSON object:
+
+```json
+[
+  {
+    "date": "2022-03-23T10:05:32.330176+00:00",
+    "temperatureC": 21,
+    "temperatureF": 69,
+    "summary": "Bracing"
+  },
+  {
+    "date": "2022-03-24T10:05:32.3301861+00:00",
+    "temperatureC": -15,
+    "temperatureF": 6,
+    "summary": "Sweltering"
+  },
+  {
+    "date": "2022-03-25T10:05:32.3301866+00:00",
+    "temperatureC": 45,
+    "temperatureF": 112,
+    "summary": "Mild"
+  },
+  {
+    "date": "2022-03-26T10:05:32.3301867+00:00",
+    "temperatureC": -4,
+    "temperatureF": 25,
+    "summary": "Bracing"
+  },
+  {
+    "date": "2022-03-27T10:05:32.3301877+00:00",
+    "temperatureC": -19,
+    "temperatureF": -2,
+    "summary": "Freezing"
+  }
+]
+```
