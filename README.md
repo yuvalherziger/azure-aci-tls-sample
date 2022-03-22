@@ -68,6 +68,10 @@ for instructions to use the Azure CLI to copy files from your host onto the Azur
 
 #### 3.1 Build the Image
 
+> **PLEASE NOTE:**
+> This command assumes [Docker](https://docs.docker.com/engine/install/) is installed
+> on the machine on which you're building the container image.
+
 First, you'll have to build the container image.  You can do so locally by running the following command.
 Please note: this command assumes [Docker](https://docs.docker.com/engine/install/) is installed:
 
