@@ -1,4 +1,4 @@
-# aci-api
+# Azure Container Instance Sample with TLS Support
 
 This project includes an example of an ASP.NET based REST API
 deployed as an [Azure Container Instance (ACI)](https://docs.microsoft.com/en-us/azure/container-instances/)
@@ -129,7 +129,7 @@ az container create \
     --registry-username ${SERVICE_PRINCIPAL_ID} \
     --registry-password ${SERVICE_PRINCIPAL_PASSWORD} \
     --dns-name-label ${ACI_NAME} \
-    --ports ${ACI_PORT} \
+    --ports 443 \
     --azure-file-volume-account-name ${ACI_STORAGE_ACCOUNT_NAME} \
     --azure-file-volume-account-key ${STORAGE_KEY} \
     --azure-file-volume-share-name ${ACI_SHARE_NAME} \
