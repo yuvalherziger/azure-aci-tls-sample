@@ -13,9 +13,9 @@ app.HelpOption();
 var port = app.Option<int>("-p|--port <PORT>", "The port the service should expose", CommandOptionType.SingleValue);
 port.DefaultValue = 443;
 var tlsCertPath = app.Option("-c|--cert <TLS_CERT_PATH>", "The path to the TLS certificate on the filesystem", CommandOptionType.SingleValue);
-tlsCertPath.DefaultValue = "/app/api/tls/cert.crt";
+tlsCertPath.DefaultValue = "/tls-cert/tls/cert.crt";
 var tlsPrivateKeyPath = app.Option("-k|--private-key <TLS_PRIVATE_KEY_PATH>", "The path to the TLS private key on the filesystem", CommandOptionType.SingleValue);
-tlsPrivateKeyPath.DefaultValue = "/app/api/tls/pk.key";
+tlsPrivateKeyPath.DefaultValue = "/tls-cert/pk.key";
 
 app.OnExecute(() =>
 {
