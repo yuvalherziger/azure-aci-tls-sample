@@ -5,12 +5,9 @@ deployed as an [Azure Container Instance (ACI)](https://docs.microsoft.com/en-us
 with TLS support, with the TLS certificates hosted in an
 [Azure File Share](https://docs.microsoft.com/en-us/azure/storage/files/storage-how-to-create-file-share?tabs=azure-portal).
 
-<p align="center">
-  <img style="display: block; margin-left: auto; margin-right: auto; width: 60%;" src="high-level-arch.png">
-</p>
-
 **Table of Contents:**
 
+- [Introduction](#introduction)
 - [Instructions](#instructions)
   - [1. Generate a Self-Signed TLS Certificate](#1-generate-a-self-signed-tls-certificate)
   - [2. Create a Blob File Share and Upload Certificate Data](#2-create-a-blob-file-share-and-upload-certificate-data)
@@ -20,6 +17,30 @@ with TLS support, with the TLS certificates hosted in an
   - [4. Create an ACR Service Principal](#4-create-an-acr-service-principal)
   - [5. Deploy the Container](#5-deploy-the-container)
   - [6. Verify the Deployment](#6-verify-the-deployment)
+
+## Introduction
+
+[Azure Container Isntances](https://azure.microsoft.com/en-us/services/container-instances/#features) is
+a service that allows you to spin up containerized workloads fast, without managing VMs.  This sample project
+demonstrates how you use an [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/)
+to build, publish, and eventually deploy a container to an Azure Container Instance with a TLS certificate that's
+hosted on an [Azure File Share](https://docs.microsoft.com/en-us/azure/storage/files/storage-how-to-create-file-share?tabs=azure-portal).
+
+This example makes use of an ASP.NET application running on a Linux-based container, loading the certificate data programmatically using
+a simple volume mount from a File Share, as diagrammed below:
+
+<p align="center">
+  <img style="display: block; margin-left: auto; margin-right: auto; width: 60%;" src="high-level-arch.png">
+</p>
+
+> A few notes:
+>
+> * The .NET application assumes an RSA-signed TLS certificate.  You can modify the example [here](./api/Util/CertUtil.cs)
+>   to match whichever encryption algorithm you prefer (e.g., AES instead of RSA).
+> * As called out in the [Azure documentation](https://docs.microsoft.com/en-us/azure/container-instances/container-instances-volume-azure-files#limitations)
+>   one specific limitation of the File Share volume method is that at the moment, it requires your container's runtime to run
+>   as root.
+>
 
 ## Instructions
 
